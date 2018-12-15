@@ -1,0 +1,8 @@
+bin/
+.settings
+.project
+.classpath
+target/
+
+src/main/resources/applicationContext.xml
+
