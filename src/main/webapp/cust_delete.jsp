@@ -5,6 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 탈퇴</title>
+<script>
+function cust_delete(frm){
+	if(!password.value){
+   	 alert("비밀번호를 입력하지 않았습니다.");
+    	return false;
+	}
+}
+</script>
 </head>
 <body>
 	<form action="/odi/user/delete.do" method="post">
@@ -19,8 +27,9 @@
 				<td><input type="text" name="password" placeholder="비밀번호"></td>
 			</tr>
 		</table>
-		<input type="submit" value="탈퇴하기" > 
-		<input type="button" value="홈으로" onclick="javascript:location.href='/odi/main/page.do'">
+		<input type="submit" value="탈퇴하기" onclick="cust_delete(this.form)">
+		<input type="button" value="홈으로"
+			onclick="javascript:location.href='/odi/view/main'">
 	</form>
 </body>
 </html>

@@ -24,7 +24,7 @@ import com.odi.domain.UserVO;
 public class NaverService {
 	private final static String CLIENT_ID = "eDavDVk3glwtWcYaYm49";
 	private final static String CLIENT_SECRET = "fFaKt5PeF6";
-	private final static String REDIRECT_URI = "http://localhost:8080/odi/naver/callback.do";
+	private final static String REDIRECT_URI = "http://localhost:8080/odi/user/naver/callback.do";
 	private final static String SESSION_STATE = "oauth_state";
 	private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
 
@@ -57,7 +57,6 @@ public class NaverService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		NaverLogin result = objectMapper.readValue(response, NaverLogin.class);
 
-		System.out.println("(naver_service)response : " + response);
 		return responseToUser(result.getResponse());
 	}
 

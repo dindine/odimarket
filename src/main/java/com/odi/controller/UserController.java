@@ -36,18 +36,27 @@ public class UserController {
 	public String login(Model model, HttpSession session, @RequestParam String id, @RequestParam String password) {
 		try {
 			UserVO user = userService.findOne(id, password);
+			if (user != null) {
+				
+				model.addAttribute("user", user);
+				session.setAttribute("user", user);
+				return "/main.jsp";
+			} else {
+				System.out.println("user :"  + user);
+				model.addAttribute("msg", "아이디와 비밀번호를 다시 입력해주세요");
+				model.addAttribute("url", "/odi/login.jsp");
+				return "/alert.jsp";
+			}
 
-			model.addAttribute("user", user);
-			session.setAttribute("user", user);
-
-			return "/main.jsp";
 		} catch (Exception e) {
+			System.out.println("오류입니다.");
+			e.printStackTrace();
 			return "/login.jsp";
 		}
 	}
 
 	@RequestMapping("naver/login.do")
-	public String loginByNaver(Model model, HttpSession session) {
+	public String loginByNaver(Model model, HttpSession session){
 		return "redirect:" + naverService.getAuthorizationUrl(session);
 	}
 
@@ -123,9 +132,8 @@ public class UserController {
 			session.invalidate();
 			
 			return "redirect:/login.jsp";
-		} else {
+		}else {
 			return "/main.jsp";
 		}
 	}
-
 }
