@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductDAO">
+	<resultMap id="productResult" type="product">
+		<result property="p_idx" column="P_IDX" />
+		<result property="p_name" column="P_NAME" />
+		<result property="p_price" column="P_PRICE" />
+		<result property="p_content" column="P_CONTENT" />
+		<result property="p_category" column="P_CATEGORY" />
+		<result property="p_regdate" column="P_REGDATE" />
+		<result property="seller" column="SELLER" />
+		<result property="p_ori_image1" column="P_ORI_IMAGE1" />
+		<result property="p_ori_image2" column="P_ORI_IMAGE2" />
+		<result property="p_ori_image3" column="P_ORI_IMAGE3" />
+		<result property="p_ori_image4" column="P_ORI_IMAGE4" />
+		<result property="p_ori_image5" column="P_ORI_IMAGE5" />
+		<result property="p_new_image1" column="P_NEW_IMAGE1" />
+		<result property="p_new_image2" column="P_NEW_IMAGE2" />
+		<result property="p_new_image3" column="P_NEW_IMAGE3" />
+		<result property="p_new_image4" column="P_NEW_IMAGE4" />
+		<result property="p_new_image5" column="P_NEW_IMAGE5" />
+		<result property="hit" column="HIT" />
+		<result property="zzim" column="ZZIM" />
+		<result property="chat_cnt" column="CHAT_CNT" />
+		<result property="p_regdate" column="P_REGDATE" />
+
+	</resultMap>
+
+	<!-- 상품 전체 조회 -->
+	<select id="getProductList" resultMap="productResult">
+		SELECT * FROM PRODUCT
+		ORDER BY P_IDX DESC
+	</select>
+
+	<!--특정 물건 정보 -->
+	<select id="getProduct" resultMap="productResult"
+		parameterType="product">
+		SELECT * FROM PRODUCT WHERE P_IDX = #{p_idx}
+	</select>
+
+	<!-- 물건 등록 -->
+	<insert id="insertProduct" parameterType="product">
+		INSERT INTO PRODUCT
+		VALUES(PRODUCT_SEQ.NEXTVAL, #{p_name},
+		#{p_price},
+		#{p_content}, #{p_category}, SYSDATE, #{seller},
+		#{p_ori_image1}, #{p_ori_image2}, #{p_ori_image3}, #{p_ori_image4}, #{p_ori_image5},
+		#{p_new_image1}, #{p_new_image2}, #{p_new_image3}, #{p_new_image4},
+		#{p_new_image5}
+		,0, 0, 0 )
+	</insert>
+
+	<!-- 물건 수정 -->
+	<update id="updateProduct" parameterType="product">
+		<![CDATA[
+		UPDATE PRODUCT
+		   SET P_NAME = #{p_name},
+		       P_PRICE = #{p_price},
+		       P_CONTENT = #{p_content},
+		       P_ORI_IMAGE1 = #{p_ori_image1}, 
+		       P_ORI_IMAGE2 = #{p_ori_image2}, 
+		       P_ORI_IMAGE3 = #{p_ori_image3}, 
+		       P_ORI_IMAGE4 =  #{p_ori_image4}, 
+		       P_ORI_IMAGE5 = #{p_ori_image5},
+			   P_NEW_IMAGE1 = #{p_new_image1}, 
+			   P_NEW_IMAGE2 = #{p_new_image2}, 
+			   P_NEW_IMAGE3 = #{p_new_image3}, 
+			   P_NEW_IMAGE4 = #{p_new_image4}, 
+			   P_NEW_IMAGE5 = #{p_new_image5}
+		 WHERE P_IDX = #{p_idx}
+	]]>
+	</update>
+
+	<!-- 물건 삭제 -->
+	<delete id="deleteProduct" parameterType="product">
+		DELETE FROM PRODUCT
+		WHERE P_IDX = #{p_idx}
+	</delete>
+
+	<!-- 찜 테이블 정보 -->
+	<select id="zzimInfo" parameterType="Map" resultType="product">
+		SELECT * FROM ZZIM WHERE P_IDX = #{p_idx} AND CUST_ID = #{cust_id}
+	</select>
+	
+	<!-- 찜 데이터 추가 -->
+	<insert id="zzimInsert" parameterType="Map">
+		INSERT INTO ZZIM VALUES(#{p_idx}, #{cust_id} ,#{zzim_check})
+	</insert>
+	
+	<!-- 나의 찜 리스트 -->
+	<select id="myZzim" parameterType="String" resultType="product">
+	  SELECT * FROM PRODUCT, ZZIM WHERE ZZIM.P_IDX = PRODUCT.P_IDX AND CUST_ID = #{cust_id} AND ZZIM_CHECK = '1'
+	</select>
+	
+	<!-- 찜 체크 여부 -->
+	<update id="zzimcount_plus" parameterType="Map">
+		UPDATE ZZIM SET
+		ZZIM_CHECK
+		= #{zzim_check}
+		WHERE P_IDX
+		= #{p_idx} AND CUST_ID = #{cust_id}
+	</update>
+
+	<!-- 찜 카운트 취소 -->
+	<update id="zzimcount_cancel" parameterType="product">
+		UPDATE ZZIM SET
+		ZZIM_CHECK = 0
+		WHERE P_IDX
+		= #{p_idx} AND CUST_ID = #{cust_id}
+	</update>
+	
+	<!-- 찜 카운트 -->
+	<update id="zzimcount" parameterType="product">
+		UPDATE PRODUCT SET
+		ZZIM = (SELECT COUNT(*) FROM ZZIM
+		WHERE P_IDX
+		= #{p_idx} AND ZZIM_CHECK = '1')
+		WHERE P_IDX
+		= #{p_idx}
+	</update>
+	
+	<!-- 상품 카테고리 전체 조회 -->
+	<select id="getProductList_cate" resultMap="productResult" parameterType="String">
+		SELECT * FROM PRODUCT WHERE P_CATEGORY = #{p_category} ORDER BY P_IDX DESC
+	</select>
+	
+		<!-- 카테고리 -->
+	<!-- 물건고유번호 지정을 위해 기존의 각 카테고리별 고유 번호 존재 여부 확인 있으면 새로운 번호 지정을 위해 -->
+	<select id="getPno" resultType="int" parameterType="String">
+		SELECT
+		COUNT(*) FROM PRODUCT WHERE P_CATEGORY = #{p_category}
+	</select>
+
+	<select id="exitsgetPno" resultType="String"
+		parameterType="String">
+		SELECT DISTINCT P_IDX FROM PRODUCT WHERE P_CATEGORY =
+		#{p_category} ORDER BY P_IDX ASC
+	</select>
+
+	<!-- 카테고리 목록 조회 -->
+	<select id="getCategory" resultType="String">
+		SELECT CATEGORY_KNAME FROM
+		CATEGORY
+	</select>
+
+	<!-- 카테고리의 고유 태그 이름 조회 예) SC_, MK_ ... -->
+	<select id="getCategoryIDX" resultType="String"
+		parameterType="String">
+		SELECT CATEGORY_IDX FROM CATEGORY WHERE CATEGORY_KNAME =
+		#{category_kname}
+	</select>
+	
+</mapper>

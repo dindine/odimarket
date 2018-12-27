@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 태그의 namespace 속성 필수 작성  -->  
+<mapper namespace="CustomerDAO">
+	<resultMap id="customerResult" type="customer">
+		<result property="cust_id" column="CUST_ID"/>
+		<result property="cust_pwd" column="CUST_PWD"/>
+		<result property="cust_email" column="CUST_EMAIL"/>
+		<result property="cust_phone" column="CUST_PHONE"/>
+		<result property="cust_level" column="CUST_LEVEL"/>
+		<result property="cust_addr" column="CUST_ADDR"/>
+		<result property="cust_nickname" column="CUST_NICKNAME"/>
+		<result property="cust_key" column="CUST_KEY"/>
+	</resultMap>
+	
+	<!-- 회원 가입 -->
+	<insert id="insertCustomer" parameterType="customer">
+		INSERT INTO CUSTOMER (CUST_ID, CUST_PWD, CUST_EMAIL, CUST_PHONE, CUST_LEVEL, CUST_ADDR, CUST_NICKNAME, CUST_KEY)
+		VALUES (#{cust_id}, #{cust_pwd}, #{cust_email}, #{cust_phone}, '새싹', #{cust_addr}, #{cust_nickname}, 'key') 
+	</insert>
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="customer">
+		SELECT CUST_ID FROM CUSTOMER WHERE CUST_ID = #{cust_id}
+	</select>
+	
+	<!-- 이메일 중복 검사 -->
+	<select id="emailCheck" resultType="customer">
+		SELECT CUST_EMAIL FROM CUSTOMER WHERE CUST_EMAIL = #{cust_email}
+	</select>
+	
+	<!-- 회원 목록 조회 -->
+	<select id="getCustomerList" resultMap="customerResult">
+		SELECT * FROM CUSTOMER
+	</select>
+
+	<select id="getCustomerListWhere" resultMap="customerResult">
+		SELECT * FROM CUSTOMER 
+		 <where>
+		<if test="searchCondition == 'CUST_ID'">
+		   CUST_ID LIKE '%' || #{searchKeyword} || '%'	
+		</if>
+		<if test="searchCondition == 'CUST_NICKNAME'">
+		   AND CUST_NICKNAME LIKE '%' || #{searchKeyword} || '%'	
+		</if>
+		 </where>
+	</select>
+	
+	<!-- 회원 삭제 -->
+	<delete id="deleteCustomer" parameterType="customer">
+		DELETE FROM CUSTOMER WHERE CUST_ID = #{cust_id}
+	</delete>
+	
+	<!-- 회원 인증키(난수) 생성 -->
+	<update id="getKey" parameterType="Map">
+		UPDATE CUSTOMER SET CUST_KEY = #{cust_key} WHERE CUST_ID = #{cust_id}
+	</update>
+
+	<!-- 회원 인증키(난수) Y로 변경 (메일 인증 성공)-->
+	<update id="alter_custKey" parameterType="Map">
+		UPDATE CUSTOMER SET CUST_KEY = 'Y' WHERE CUST_ID = #{cust_id} AND CUST_KEY = #{cust_key}
+	</update>
+	
+</mapper>  
+
+
+
+
+
+

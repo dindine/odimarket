@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 태그의 namespace 속성 필수 작성 -->
+<mapper namespace="ProAnsDAO">
+	
+	<!-- 댓글 전체건수 조회 -->
+	<select id="pro_ans_totalCount" resultType="int">
+		SELECT
+		COUNT(PRO_A_IDX) FROM
+		PRO_ANSWER
+	</select>
+
+	<!-- 게시글에 해당하는 댓글 전체건수 조회 -->
+	<select id="b_a_totalCount" resultType="int" parameterType="proAns">
+		SELECT
+		COUNT(PRO_A_IDX)
+		FROM PRO_ANSWER WHERE PRO_B_IDX = #{pro_b_idx}
+	</select>
+
+	<!-- <select id="pro_reply_all_List" ResultMap="pro_reply_Result"> -->
+	<select id="pro_ans_all_List" resultType="proAns" parameterType="proAns">
+		SELECT * FROM
+		PRO_ANSWER WHERE PRO_B_IDX = #{pro_b_idx} ORDER BY PRO_A_IDX DESC
+	</select>
+
+	<!-- 페이지에 표시할 댓글 조회 -->
+	<select id="pro_Ans_List" resultType="proAns"
+		parameterType="Map">
+		SELECT
+		R_NUM, PRO_A_IDX
+		,PRO_A_WRITER
+		,PRO_A_CONTENT
+		,PRO_A_PWD
+		,PRO_A_REGDATE
+		,PRO_B_IDX
+		,P_IDX
+		,CUST_NICKNAME
+		FROM (SELECT ROWNUM R_NUM, B.*
+		FROM
+		(SELECT *
+		FROM PRO_ANSWER
+		ORDER BY PRO_A_IDX
+		DESC
+		) B
+		)
+		WHERE R_NUM
+		BETWEEN
+		#{begin} AND #{end}
+	</select>
+
+	<!-- 상품 상세페이지에 표시할 댓글 조회 -->
+	<select id="pro_Ans_ListforReply" resultType="proAns">
+		SELECT R_NUM,
+		PRO_A_IDX
+		,PRO_A_WRITER
+		,PRO_A_CONTENT
+		,PRO_A_PWD
+		,PRO_A_REGDATE
+		,PRO_B_IDX
+		,P_IDX
+		,CUST_NICKNAME
+		FROM (SELECT ROWNUM
+		R_NUM, B.*
+		FROM (SELECT *
+		FROM
+		PRO_ANSWER
+		WHERE PRO_B_IDX = #{pro_b_idx}
+		ORDER BY
+		PRO_B_IDX DESC
+		) B
+		)
+		WHERE R_NUM BETWEEN
+		#{begin} AND #{end}
+	</select>
+
+	<!-- 댓글 하나 조회 -->
+	<select id="pro_ans_One" resultType="proAns"
+		parameterType="proAns">
+		SELECT *
+		FROM PRO_ANSWER WHERE PRO_A_IDX = #{pro_a_idx}
+	</select>
+
+
+	<!-- 댓글 입력(COMMENT_T) -->
+	<insert id="pro_answer_insert"
+		parameterType="com.odi.biz.pro_answer.ProAnsVO">
+		INSERT INTO PRO_ANSWER
+		(PRO_A_IDX ,PRO_A_WRITER
+		,PRO_A_CONTENT ,PRO_A_REGDATE ,PRO_B_IDX ,P_IDX ,CUST_NICKNAME)
+		VALUES
+		(PRO_ANSWER_SEQ.NEXTVAL,
+		#{pro_a_writer},
+		#{pro_a_content}, SYSDATE,
+		#{pro_b_idx}, #{p_idx}, #{cust_nickname})
+	</insert>
+
+	<!-- 댓글 삭제(COMMENT_T) -->
+	<delete id="pro_answer_delete" parameterType="String">
+		DELETE FROM
+		PRO_ANSWER WHERE
+		PRO_A_IDX = #{pro_a_idx}
+	</delete>
+
+
+	<!-- 댓글 수정 -->
+	<update id="pro_answer_update"
+		parameterType="com.odi.biz.pro_answer.ProAnsVO">
+		UPDATE PRO_ANSWER
+		SET 
+		PRO_A_CONTENT =
+		#{pro_a_content},
+		PRO_A_WRITE_DATE =
+		SYSDATE
+		WHERE PRO_A_IDX = #{pro_a_idx }
+	</update>
+
+
+
+</mapper>  
+
+
+
+
+
+

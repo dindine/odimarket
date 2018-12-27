@@ -61,5 +61,6 @@
 			<i class="fa fa-google" aria-hidden="true"></i>Google Login
 		</button>
 	</a>
+	
 </body>
 </html>

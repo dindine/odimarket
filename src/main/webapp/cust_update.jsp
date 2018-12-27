@@ -48,6 +48,8 @@
 		</table>
 		<input type="reset" value="초기화"> 
 		<input type="submit" value="수정">
+		<input type="button" value="회원탈퇴"
+		onclick="javascript:location.href='/odi/cust_delete/page.do'">
 	</form>
 </body>
 </html>

@@ -7,6 +7,6 @@
 </head>
 <body>
 	<h2>로그인 시작하는 페이지(index)</h2>
-	<p><a href="login.jsp">로그인</a></p>aFS
+	<p><a href="login.jsp">로그인</a></p>
 </body>
 </html>

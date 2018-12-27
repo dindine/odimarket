@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 태그의 namespace 속성 필수 작성 -->
+<mapper namespace="ProReplyDAO">
+<!-- 
+	<resultMap id="pro_reply_Result" type="proReply">
+		<result property="pro_b_idx" column="PRO_B_IDX" />
+		<result property="pro_b_writer" column="PRO_B_WRITER" />
+		<result property="pro_b_content" column="PRO_B_CONTENT" />
+		<result property="pro_b_file_name" column="PRO_B_FILE_NAME" />
+		<result property="pro_b_pwd" column="PRO_B_PWD" />
+		<result property="pro_b_write_date" column="PRO_B_WRITE_DATE" />
+		<result property="pro_b_hit" column="PRO_B_HIT" />
+		<result property="pro_b_ori_name" column="PRO_B_ORI_NAME" />
+		<result property="pro_star" column="PRO_STAR" />
+		<result property="pro_good" column="PRO_GOOD" />
+		<result property="pro_bad" column="PRO_BAD" />
+		<result property="p_idx" column="P_IDX" />
+	</resultMap>
+ -->
+	
+	<!-- 게시판 전체건수 조회 -->
+	<select id="pro_reply_totalCount" resultType="int">
+		SELECT
+		COUNT(PRO_B_IDX) FROM
+		PRO_REPLY
+	</select>
+
+	<!-- 상품정보에 해당하는 게시판 전체건수 조회 -->
+	<select id="product_b_totalCount" resultType="int">
+		SELECT
+		COUNT(PRO_B_IDX)
+		FROM PRO_REPLY WHERE PRO_P_IDX = #{pro_p_idx}
+	</select>
+
+	<!--
+	<select id="pro_reply_all_List" ResultMap="pro_reply_Result">
+	-->
+	<select id="pro_reply_all_List" resultType="proReply" parameterType="proReply">
+		SELECT * FROM PRO_REPLY WHERE P_IDX = #{p_idx} ORDER BY PRO_B_IDX DESC
+	</select>
+
+	<!-- 페이지에 표시할 게시글 조회 -->
+	<select id="pro_reply_List"
+		 resultType="proReply" parameterType="Map">
+		SELECT
+		R_NUM, PRO_B_IDX
+		,PRO_B_SUBJECT
+		,PRO_B_WRITER
+		,PRO_B_CONTENT
+		,PRO_B_FILE_NAME
+		,PRO_B_PWD
+		,PRO_B_WRITE_DATE
+		,PRO_B_HIT
+		,PRO_B_ORI_NAME
+		,PRO_STAR
+		,PRO_GOOD
+		,PRO_BAD
+		,P_IDX
+		,CUST_NICKNAME
+		FROM (SELECT ROWNUM R_NUM, B.*
+		FROM
+		(SELECT *
+		FROM PRO_REPLY
+		ORDER BY PRO_B_IDX
+		DESC
+		) B
+		)
+		WHERE R_NUM BETWEEN
+		#{begin} AND #{end}
+	</select>
+
+	<!-- 상품 상세페이지에 표시할 게시글 조회 -->
+	<select id="pro_reply_ListforProduct"
+		resultType="proReply">
+		SELECT R_NUM, PRO_B_IDX
+		,PRO_B_SUBJECT
+		,PRO_B_WRITER
+		,PRO_B_CONTENT
+		,PRO_B_FILE_NAME
+		,PRO_B_PWD
+		,PRO_B_WRITE_DATE
+		,PRO_B_HIT
+		,PRO_B_ORI_NAME
+		,PRO_STAR
+		,PRO_GOOD
+		,PRO_BAD
+		,P_IDX
+		,CUST_NICKNAME
+		FROM (SELECT ROWNUM
+		R_NUM, B.*
+		FROM (SELECT *
+		FROM PRO_REPLY
+		WHERE P_IDX = #{p_idx}
+		ORDER BY
+		PRO_B_IDX DESC
+		) B
+		)
+		WHERE R_NUM BETWEEN
+		#{begin} AND #{end}
+	</select>
+
+	<!-- 게시글 하나 조회 -->
+	<select id="pro_reply_One"
+		 resultType="proReply" parameterType="string">
+		SELECT *
+		FROM PRO_REPLY WHERE PRO_B_IDX = #{pro_b_idx}
+	</select>
+
+	<!-- 게시글(BBS_T) 등록 -->
+	<insert id="pro_reply_write"
+		parameterType="com.odi.biz.pro_reply.ProReplyVO">
+		INSERT INTO PRO_REPLY
+		(PRO_B_IDX
+		,PRO_B_WRITER
+		,PRO_B_CONTENT
+		,PRO_B_FILE_NAME
+		,PRO_B_PWD
+		,PRO_B_WRITE_DATE
+		,PRO_B_HIT
+		,PRO_B_ORI_NAME
+		,PRO_GOOD
+		,PRO_BAD
+		,P_IDX
+	    ,CUST_NICKNAME)
+		VALUES (PRO_REPLY_SEQ.NEXTVAL,
+		#{pro_b_writer}, #{pro_b_content},
+		#{pro_b_file_name}, #{pro_b_pwd},
+		SYSDATE, 0,
+		#{pro_b_ori_name}, 0, 0, #{p_idx}, #{cust_nickname})
+	</insert>
+	<!-- 
+		<insert id="pro_reply_write"
+		parameterType="com.odi.biz.pro_reply.ProReplyVO">
+		INSERT INTO PRO_REPLY
+		(PRO_B_IDX
+		,PRO_B_SUBJECT
+		,PRO_B_WRITER
+		,PRO_B_CONTENT
+		,PRO_B_FILE_NAME
+		,PRO_B_PWD
+		,PRO_B_WRITE_DATE
+		,PRO_B_HIT
+		,PRO_B_ORI_NAME
+		,PRO_STAR
+		,PRO_GOOD
+		,PRO_BAD
+		,P_IDX)
+		VALUES (PRO_REPLY_SEQ.NEXTVAL,'1',
+		'ri', '1',
+		'1', '1234',
+		SYSDATE, '0',
+		'1',
+		'1', '0', '0', '1')
+	</insert>
+	 -->
+
+	<!-- 조회수 수정(1증가) <update id="hitVO" parameterType="com.odi.biz.pro_reply.ProReply"> 
+		UPDATE PRO_REPLY SET B_HIT = #{b_hit} + 1 WHERE B_IDX = #{b_idx} </update> 
+		<update id="hit" parameterType="int"> UPDATE BOARD SET B_HIT = B_HIT + 1 
+		WHERE B_IDX = #{b_idx} </update> -->
+
+	<!-- 게시글 수정 -->
+	<update id="pro_reply_modify"
+		parameterType="proReply">
+		UPDATE PRO_REPLY
+		SET
+		PRO_B_CONTENT=#{pro_b_content}, PRO_B_FILE_NAME= #{pro_b_file_name},
+		PRO_B_WRITE_DATE=SYSDATE, PRO_B_ORI_NAME =
+		#{pro_b_ori_name}
+		WHERE PRO_B_IDX = #{pro_b_idx}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="pro_reply_delete" parameterType="String">
+		DELETE FROM
+		PRO_REPLY WHERE
+		PRO_B_IDX = #{pro_b_idx}
+	</delete>
+
+
+
+</mapper>  
+
+
+
+
+
+

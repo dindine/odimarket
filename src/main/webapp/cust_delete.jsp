@@ -29,7 +29,7 @@ function cust_delete(frm){
 		</table>
 		<input type="submit" value="탈퇴하기" onclick="cust_delete(this.form)">
 		<input type="button" value="홈으로"
-			onclick="javascript:location.href='/odi/view/main'">
+			onclick="javascript:location.href='/odi/main/page.do'">
 	</form>
 </body>
 </html>

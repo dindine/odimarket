@@ -3,17 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  <typeAliases>
-  	<typeAlias alias="user" type="com.odi.domain.UserVO"/>
-  </typeAliases>
-  
-  <mappers>
-    <mapper resource="mappings/user-mapper.xml"/>
-  </mappers>
+	<typeAliases>
+		<typeAlias alias="user" type="com.odi.biz.user.UserVO" />
+		<typeAlias alias="product"
+			type="com.odi.biz.product.ProductVO" />
+		<typeAlias alias="proReply"
+			type="com.odi.biz.pro_reply.ProReplyVO" />
+		<typeAlias alias="proAns"
+			type="com.odi.biz.pro_answer.ProAnsVO" />
+		<!-- 
+		<typeAlias alias="zzokJi" type="com.odi.biz.zzokji.ZzokjiVO" />
+		 -->
+		<typeAlias alias="customer"
+			type="com.odi.biz.join.CustomerVO" />
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mappings/user-mapper.xml" />
+		<mapper resource="mappings/product-mapper.xml" />
+		<mapper resource="mappings/proReply_mapper.xml" />
+		<mapper resource="mappings/proAns_mapper.xml" />
+		<!-- 
+		<mapper resource="mappings/zzokji-mapper.xml" />
+		 -->
+		<mapper resource="mappings/customer-mapper.xml" />
+
+	</mappers>
 </configuration>
-
-
-
 
 
 
