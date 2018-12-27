@@ -9,22 +9,23 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-	<context:component-scan base-package="com.odi.view"/>
-	
+	<context:component-scan base-package="com.odi.view" />
+
 	<!-- 파일 업로드 설정 -->
-	<!-- multipartResolver 명칭(이름)은 대소문자 구분해서 똑같이 작성 
-		~Resolver 로 끝나는 클래스 생성할 경우 정해진 이름을 쓰는 경우 많음
-	-->
-	<bean id="multipartResolver" 
+	<!-- multipartResolver 명칭(이름)은 대소문자 구분해서 똑같이 작성 ~Resolver 로 끝나는 클래스 생성할 
+		경우 정해진 이름을 쓰는 경우 많음 -->
+	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="10000000"/><!-- 단위 bytes -->
+		<property name="maxUploadSize" value="10000000" /><!-- 단위 bytes -->
 	</bean>
-	
+
 	<!-- JSON 데이터 전환 관련 설정 -->
-	<!-- JSON 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 객체 사용 -->
+	<!-- JSON 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 
+		객체 사용 -->
 	<!-- XML 데이터 전환 관련 설정 -->
-	<!-- XML 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 객체 사용 -->
-	
+	<!-- XML 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 
+		객체 사용 -->
+
 	<!-- 메일보내기 -->
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -42,6 +43,6 @@
 			</props>
 		</property>
 	</bean>
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven />
 </beans>
 

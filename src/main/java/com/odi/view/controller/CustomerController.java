@@ -1,4 +1,4 @@
-package com.odi.view.join;
+package com.odi.view.controller;
 
 import java.util.HashMap;
 import java.util.List;

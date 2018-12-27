@@ -1,4 +1,4 @@
-package com.odi.view.product;
+package com.odi.view.controller;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.odi.controller;
+package com.odi.view.controller;
 
 import java.io.IOException;
 
@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.odi.domain.UserVO;
-import com.odi.service.GoogleService;
-import com.odi.service.NaverService;
-import com.odi.service.UserService;
+import com.odi.biz.user.UserVO;
+import com.odi.biz.user.service.GoogleService;
+import com.odi.biz.user.service.NaverService;
+import com.odi.biz.user.service.UserService;
+
+
 
 @Controller
 @RequestMapping("/user")
@@ -40,7 +42,12 @@ public class UserController {
 				
 				model.addAttribute("user", user);
 				session.setAttribute("user", user);
-				return "/main.jsp";
+				session.setAttribute("cust_id", id);
+				session.setAttribute("cust_pwd", password);
+
+				model.addAttribute("cust_id", id);
+//				return "/main.jsp";
+				return "redirect:http://localhost:8080/odi/getProductList.do?cust_id="+user.getCust_id();
 			} else {
 				System.out.println("user :"  + user);
 				model.addAttribute("msg", "아이디와 비밀번호를 다시 입력해주세요");
@@ -68,25 +75,25 @@ public class UserController {
 	@RequestMapping("normal/logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "/login.jsp";
+		return "redirect:http://localhost:8080/odi/main.jsp";
 	}
 
 	@RequestMapping("/logout.do")
 	public String logout_t(HttpSession session) {
 		session.invalidate();
-		return "/login.jsp";
+		return "redirect:http://localhost:8080/odi/main.jsp";
 	}
 
 	@RequestMapping("/naver/logout.do")
 	public String logoutByNaver(HttpSession session) {
 		session.invalidate();
-		return "/login.jsp";
+		return "redirect:http://localhost:8080/odi/main.jsp";
 	}
 
 	@RequestMapping("/google/logout.do")
 	public String logoutByGoogle(HttpSession session) {
 		session.invalidate();
-		return "/login.jsp";
+		return "redirect:http://localhost:8080/odi/main.jsp";
 	}
 
 	@RequestMapping(value = "naver/callback.do")
@@ -94,11 +101,22 @@ public class UserController {
 			throws IOException {
 		UserVO user = naverService.getUserProfile(session, code, state);
 		userService.save(user);
-
+		
+		user = userService.findById(user.getCust_id());
+		System.out.println("회원 정보 : " + user);
 		model.addAttribute("user", user);
 		session.setAttribute("user", user);
-
-		return "/main.jsp";
+		
+		if(user.getCust_pwd() != null && user.getCust_pwd() != "") {
+		session.setAttribute("cust_id", user.getCust_id());
+		session.setAttribute("cust_pwd", user.getCust_pwd());
+		//return "/main.jsp";
+		return "redirect:http://localhost:8080/odi/getProductList.do?cust_id="+user.getCust_id();
+		} else {
+			model.addAttribute("msg", "[간편 로그인] 을 계속해서 이용하려면, 추가 정보를 입력해주세요!");
+			model.addAttribute("url", "/odi/cust_update.jsp");
+			return "/alert.jsp";
+		}
 	}
 
 	@RequestMapping(value = "google/callback.do")
@@ -106,11 +124,23 @@ public class UserController {
 			throws Exception {
 		UserVO user = googleService.createUser(code);
 		userService.save(user);
-
+		
+		user = userService.findById(user.getCust_id());
+		System.out.println("회원 정보 : " + user);
 		model.addAttribute("user", user);
 		session.setAttribute("user", user);
-
-		return "/main.jsp";
+		
+		if(user.getCust_pwd() != null && user.getCust_pwd() != "") {
+		session.setAttribute("cust_id", user.getCust_id());
+		session.setAttribute("cust_pwd", user.getCust_pwd());
+		//return "/main.jsp";
+		return "redirect:http://localhost:8080/odi/getProductList.do?cust_id="+user.getCust_id();
+		} else {
+			model.addAttribute("msg", "[간편 로그인] 을 계속해서 이용하려면, 추가 정보를 입력해주세요!");
+			model.addAttribute("url", "/odi/cust_update.jsp");
+			return "/alert.jsp";
+		}
+		
 	}
 
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
@@ -119,7 +149,7 @@ public class UserController {
 			model.addAttribute("user", user);
 			session.setAttribute("user", user);
 
-			return "/main.jsp";
+			return "redirect:http://localhost:8080/odi/getProductList.do?cust_id="+user.getCust_id();
 		} else {
 			return "redirect:/login.jsp";
 		}

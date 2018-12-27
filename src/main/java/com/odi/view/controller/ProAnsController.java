@@ -1,4 +1,4 @@
-package com.odi.view.pro_answer;
+package com.odi.view.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -25,7 +24,7 @@ public class ProAnsController {
 	
 	@RequestMapping("/getProAns.do")
 	public String getProAns(@RequestParam("pro_b_idx") String pro_b_idx, ProAnsVO vo, Model model, HttpServletRequest request) {
-		
+			
 		List<ProAnsVO> list = proAnsService.getAnsList(vo);
 		int proAns_totalcount = list.size();
 		System.out.println("댓글 리스트 데이터 수 : " + proAns_totalcount);

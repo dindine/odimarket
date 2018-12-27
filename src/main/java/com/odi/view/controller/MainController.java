@@ -1,5 +1,4 @@
-package com.odi.view.user;
-
+package com.odi.view.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -7,10 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.odi.biz.user.UserVO;
+import com.odi.domain.UserVO;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 
 	@RequestMapping("{viewName}/page.do")
