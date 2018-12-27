@@ -1,17 +1,15 @@
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>시작페이지</title>
+    <meta charset="UTF-8">
+    <title>시작페이지</title>
 </head>
 <script>
-	function start() {
-		location.href="product_content.jsp"
-	}
+    function start() {
+        location.href = "product_content.jsp"
+    }
 </script>
 <body>
 
