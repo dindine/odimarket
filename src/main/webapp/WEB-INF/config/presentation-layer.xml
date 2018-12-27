@@ -1,48 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<context:component-scan base-package="com.odi.view" />
+    <context:component-scan base-package="com.odi.biz"/>
 
-	<!-- 파일 업로드 설정 -->
-	<!-- multipartResolver 명칭(이름)은 대소문자 구분해서 똑같이 작성 ~Resolver 로 끝나는 클래스 생성할 
-		경우 정해진 이름을 쓰는 경우 많음 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="10000000" /><!-- 단위 bytes -->
-	</bean>
+    <!-- 파일 업로드 설정 -->
+    <!-- multipartResolver 명칭(이름)은 대소문자 구분해서 똑같이 작성 ~Resolver 로 끝나는 클래스 생성할
+        경우 정해진 이름을 쓰는 경우 많음 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10000000"/><!-- 단위 bytes -->
+    </bean>
 
-	<!-- JSON 데이터 전환 관련 설정 -->
-	<!-- JSON 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 
-		객체 사용 -->
-	<!-- XML 데이터 전환 관련 설정 -->
-	<!-- XML 변환 관련 HttpMessageConverter(인터페이스)를 구현한 객체 사용 MappingJackson2HttpMessageconverter 
-		객체 사용 -->
+    <!-- 메일보내기 -->
+    <bean id="mailSender"
+          class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="587"/>
+        <property name="username" value="odimarket.bit@gmail.com"/>
+        <property name="password" value="odi_1234"/>
 
-	<!-- 메일보내기 -->
-	<bean id="mailSender"
-		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
-		<property name="port" value="587" />
-		<property name="username" value="odimarket.bit@gmail.com" />
-		<property name="password" value="odi_1234" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
 
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop>
-			</props>
-		</property>
-	</bean>
-	<mvc:annotation-driven />
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:annotation-driven/>
 </beans>
 
