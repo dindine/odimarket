@@ -225,7 +225,7 @@
                             <input type="hidden" id="${i }" value="${i }">
                             <c:choose>
                                 <%--로그인 했을 경우 --%>
-                                <c:when test="${b_answers[i].pro_a_writer eq user_id }">
+                                <c:when test="${b_answers[i].pro_a_writer eq cust_id }">
                                     <li style="padding-right: 0px"><input type="button"
                                                                           id="update${i }" class="btn" value="수정"
                                                                           onclick="answer_update(this.id)"

@@ -79,7 +79,7 @@ public class ProReplyController {
         String cust_id = vo.getPro_b_writer();
         model.addAttribute("cust_id", cust_id);
 
-        return "product_content.jsp?cust_id=" + cust_id;
+        return "product_content.jsp?cust_id=" + cust_id + "&p_idx=" + vo.getP_idx();
     }
 
     @RequestMapping("/updateProReply.do")
@@ -114,7 +114,7 @@ public class ProReplyController {
         // 스프링에서 파라미터값을 BoardVO 타입의 객체에 입력하고 vo변수에 주입
         proReplyService.updateBoard(vo);
 
-        return "product_content.jsp";
+        return "product_content.jsp?cust_id=" + vo.getPro_b_writer() + "&p_idx=" + vo.getP_idx();
     }
 
     @RequestMapping("/deleteProReply.do")
@@ -126,6 +126,6 @@ public class ProReplyController {
         // 스프링에서 파라미터값을 BoardVO 타입의 객체에 입력하고 vo변수에 주입
         proReplyService.deleteBoard(vo);
 
-        return "complete.jsp";
+        return "product_content.jsp?cust_id=" + vo.getPro_b_writer() + "&p_idx=" + vo.getP_idx();
     }
 }

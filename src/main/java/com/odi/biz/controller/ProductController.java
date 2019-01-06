@@ -207,7 +207,9 @@ public class ProductController {
 
         return "getProductList.do";
     }
-
+    
+    
+    
     @RequestMapping("/updateProduct_form.do")
     public String updateProduct_form(ProductVO vo, Model model) {
         System.out.println(">> 상품 수정 폼 (updateProduct_form)");

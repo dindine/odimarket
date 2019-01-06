@@ -52,7 +52,7 @@ public class ProAnsController {
         // 스프링에서 파라미터값을 AnsVO 타입의 객체에 입력하고 vo변수에 주입
         proAnsService.insertAns(vo);
 
-        return "complete.jsp";
+        return "product_content.jsp?cust_id=" + vo.getPro_a_writer() + "&p_idx=" + vo.getP_idx()+"&pro_b_idx=" + vo.getPro_b_idx();
     }
 
     @RequestMapping("/updateProAns.do")
@@ -65,7 +65,7 @@ public class ProAnsController {
         // 스프링에서 파라미터값을 AnsVO 타입의 객체에 입력하고 vo변수에 주입
         proAnsService.updateAns(vo);
 
-        return "complete.jsp";
+        return "product_content.jsp?cust_id=" + vo.getPro_a_writer() + "&p_idx=" + vo.getP_idx()+"&pro_b_idx=" + vo.getPro_b_idx();
     }
 
     @RequestMapping("/deleteProAns.do")
@@ -77,6 +77,6 @@ public class ProAnsController {
         // 스프링에서 파라미터값을 AnsVO 타입의 객체에 입력하고 vo변수에 주입
         proAnsService.deleteAns(vo);
 
-        return "complete.jsp";
+        return "product_content.jsp?cust_id=" + vo.getPro_a_writer() + "&p_idx=" + vo.getP_idx()+"&pro_b_idx=" + vo.getPro_b_idx();
     }
 }

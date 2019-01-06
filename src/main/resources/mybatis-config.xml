@@ -27,7 +27,7 @@
 		<mapper resource="mappings/zzokji-mapper.xml" />
 		 -->
 		<mapper resource="mappings/customer-mapper.xml" />
-
+		<mapper resource="mappings/community-mapper.xml" />
 	</mappers>
 </configuration>
 

@@ -112,7 +112,7 @@
 		SET 
 		PRO_A_CONTENT =
 		#{pro_a_content},
-		PRO_A_WRITE_DATE =
+		PRO_A_REGDATE =
 		SYSDATE
 		WHERE PRO_A_IDX = #{pro_a_idx }
 	</update>

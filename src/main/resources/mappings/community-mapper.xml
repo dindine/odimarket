@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CommunityDAO">
+	<resultMap id="productResult" type="product">
+		<result property="p_idx" column="P_IDX" />
+		<result property="p_name" column="P_NAME" />
+		<result property="p_price" column="P_PRICE" />
+		<result property="p_content" column="P_CONTENT" />
+		<result property="p_category" column="P_CATEGORY" />
+		<result property="p_regdate" column="P_REGDATE" />
+		<result property="seller" column="SELLER" />
+		<result property="p_ori_image1" column="P_ORI_IMAGE1" />
+		<result property="p_ori_image2" column="P_ORI_IMAGE2" />
+		<result property="p_ori_image3" column="P_ORI_IMAGE3" />
+		<result property="p_ori_image4" column="P_ORI_IMAGE4" />
+		<result property="p_ori_image5" column="P_ORI_IMAGE5" />
+		<result property="p_new_image1" column="P_NEW_IMAGE1" />
+		<result property="p_new_image2" column="P_NEW_IMAGE2" />
+		<result property="p_new_image3" column="P_NEW_IMAGE3" />
+		<result property="p_new_image4" column="P_NEW_IMAGE4" />
+		<result property="p_new_image5" column="P_NEW_IMAGE5" />
+		<result property="hit" column="HIT" />
+		<result property="zzim" column="ZZIM" />
+		<result property="chat_cnt" column="CHAT_CNT" />
+		<result property="p_regdate" column="P_REGDATE" />
+
+	</resultMap>
+
+	<!-- 상품 전체 조회 -->
+	<select id="getCommunityList" resultMap="productResult">
+		SELECT * FROM COMMUNITY
+		ORDER BY P_IDX DESC
+	</select>
+
+	<!--특정(상세) 물건 정보 -->
+	<select id="getCommunity" resultMap="productResult"
+		parameterType="product">
+		SELECT * FROM COMMUNITY WHERE P_IDX = #{p_idx}
+	</select>
+
+	<!-- 물건 등록 -->
+	<insert id="insertCommunity" parameterType="product">
+		INSERT INTO COMMUNITY
+		VALUES(PRODUCT_SEQ.NEXTVAL, #{p_name},
+		#{p_price},
+		#{p_content}, #{p_category}, SYSDATE, #{seller},
+		#{p_ori_image1}, #{p_ori_image2}, #{p_ori_image3}, #{p_ori_image4}, #{p_ori_image5},
+		#{p_new_image1}, #{p_new_image2}, #{p_new_image3}, #{p_new_image4},
+		#{p_new_image5}
+		,0, 0, 0 )
+	</insert>
+	
+</mapper>

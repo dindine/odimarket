@@ -9,7 +9,7 @@
     <title>게시글 작성</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="images/title.png">
-    <link rel="stylesheet" type="text/css" href="css/theme.css"></link>
+    <link rel="stylesheet" type="text/css" href="resources/css/theme.css"></link>
     <script>
         var arrInput = new Array(0);
         var arrInputValue = new Array(0);
@@ -189,71 +189,8 @@
 <div id="top_button">
     <a id="MOVE_TOP_BTN"><strong>TOP</strong></a>
 </div>
-<div id="header-button">
-    <ul>
-        <br>
-        <c:choose>
-            <%--로그인 했을 경우 --%>
-            <c:when test="${user_id ne null and user_id ne ''}">
-                <li id="logo_menu"><a
-                        href="">주문배송</a></li>
-                <li id="logo_menu"><a
-                        href="">장바구니</a></li>
-                <li id="logo_menu"><a
-                        href="">마이페이지</a></li>
-                <li id="logo_menu"><a href="">로그아웃</a></li>
-                <li id="logo_menu"><a href="#"> ${user_grade }&nbsp;${user_id }</a></li>
-            </c:when>
+<jsp:include page="header.jsp"></jsp:include>
 
-            <c:otherwise>
-                <%--비로그인 상태 --%>
-                <li id="logo_menu" onclick="alert_login()"><a>주문배송</a></li>
-                <li id="logo_menu" onclick="alert_login()"><a>장바구니</a></li>
-                <li id="logo_menu"><a href="login.jsp">로그인</a></li>
-                <li id="logo_menu"><a href="join.jsp">회원가입</a></li>
-            </c:otherwise>
-        </c:choose>
-    </ul>
-
-    <div id="header-search">
-
-        <div id="header_main_logo">
-
-            <ul>
-                <li><a href="Main.jsp">
-                    <strong>FOREVER YOUNG</strong></a></li>
-            </ul>
-        </div>
-
-        <form method="post">
-            <div id="area-search">
-                <ul>
-                    <input id="input-search" name="product_search_txt" type="text" placeholder="11자 복근 도전! 슬리밍템 모음 ->">
-                    <li>
-                        <input id="button-search" type="image" src="main_img/ic_search.png"
-                               onclick="go_search(this.form)">
-                    </li>
-                </ul>
-            </div>
-        </form>
-
-    </div>
-</div>
-<hr>
-<div id="menu">
-    <ul>
-        <li class="active"><a
-                href="">스킨</a></li>
-        <li id="news"><a href="">바디</a></li>
-        <li id="contact"><a
-                href="">헤어</a></li>
-        <li id="about"><a href="">메이크업</a></li>
-        <li id="cleansing"><a
-                href="">클렌징</a></li>
-        <li id="cleansing"><a href="customer_center.jsp">Q & A</a></li>
-
-    </ul>
-</div>
 <div id="pro">
     <form method="post" enctype="multipart/form-data">
         <%--  <input multiple="multiple" type="file" name="file" />--%>
